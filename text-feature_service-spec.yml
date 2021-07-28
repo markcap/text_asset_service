@@ -1,0 +1,92 @@
+openapi: 3.0.0
+info:
+  title: Text Asset Service
+  version: 1.0.0
+tags:
+  - name: "Text Assets"
+    description: Text Asset Service
+paths:
+  /text-assets/{textAssetId}:
+    get:
+      summary: Find text asset by ID
+      tags: 
+        - textAssets
+      parameters:
+        - name: textAssetId
+          in: path
+          required: true
+          description: The ID of the text asset to return.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: A JSON text asset object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/textAsset'
+        '400':
+          description: The specified text asset ID is invalid (not a number).
+        '404':
+          description: A text asset with the specified ID was not found.
+components:
+  schemas:
+    TextAsset:
+      properties:
+        textAssetId:
+          type: integer
+        featureId:
+          type: integer
+        assetType:
+          $ref: '#/components/schemas/AssetType'
+        issueDate:
+          type: date
+        originalDate:
+          type: date
+        fileName:
+          type: string
+        filePath:
+          type: string
+        archiveBasePath:
+          type: string
+        archiveFilePath:
+          type: string
+        fileType:
+          $ref: '#/components/schemas/FileType'
+        headline:
+          type: string
+        uuid:
+          type: string
+      required:  
+        - assetType
+        - filename
+        - featureId
+    AssetType:
+      properties:
+        assetTypeId:
+          type: integer
+        name:
+          type: string
+      required:
+        - name
+    FileType:
+      properties:
+        fileTypeId:
+          type: integer
+        name:
+          type: string
+        mimeType:
+          type: string
+      required:
+        - name
+    TextAssetGroup:
+      properties:
+        featureId:
+          type: integer
+        publishDate:
+          type: date
+      required:
+        - featureId
+        - publishDate
